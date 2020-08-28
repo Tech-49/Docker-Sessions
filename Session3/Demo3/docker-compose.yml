@@ -1,0 +1,28 @@
+version: "3.8"
+services:
+  app:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    container_name: php_service
+    volumes:
+      - ./src:/var/www/html/
+    ports:
+      - 8080:80
+    depends_on:
+      - db
+
+  db:
+    image: mysql:5.7
+    restart: always
+    volumes:
+      - demo_dbdata:/var/lib/mysql
+    container_name: mysql_service
+    environment:
+      - "MYSQL_ROOT_PASSWORD=secret"
+      - "MYSQL_DATABASE=docker_session"
+    ports:
+      - "3306:3306"
+
+volumes:
+  demo_dbdata:
